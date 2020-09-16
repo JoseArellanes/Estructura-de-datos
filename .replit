@@ -1,0 +1,2 @@
+language = "cpp"
+run = "g++ casos/4_linkedlist/main.cpp -o caso.exe; "
