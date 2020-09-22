@@ -31,13 +31,25 @@ private:
 };
 
 template <class T>
-DLink<T>::DLink(T val) {}
+DLink<T>::DLink(T val) {
+  value = val;
+  previous = NULL;
+  next = NULL;
+}
 
 template <class T>
-DLink<T>::DLink(T val, DLink *prev, DLink* nxt) {}
+DLink<T>::DLink(T val, DLink *prev, DLink* nxt) {
+  value = val;
+  previous = prev;
+  next = nxt;
+}
 
 template <class T>
-DLink<T>::DLink(const DLink<T> &source) {}
+DLink<T>::DLink(const DLink<T> &source) {
+  value = source.value;
+  previous = source.previous;
+  next = source.next;
+}
 
 template <class T>
 class DList {
@@ -80,16 +92,38 @@ private:
 };
 
 template <class T>
-DList<T>::DList() {}
+DList<T>::DList() {
+  head = NULL;
+  tail = NULL;
+  size = 0;
+}
 
 template <class T>
 DList<T>::~DList() {
 	clear();
+  head = NULL;
+  tail = NULL;
+  size = 0;
 }
 
 template <class T>
 bool DList<T>::empty() const {
-	return 0;
+  //Con los apuntadores head y tail
+  if (head == NULL && tail == NULL){
+    return true;
+  }
+
+  //Con el apuntador head 
+  if (head == NULL){
+    return true;
+  }
+
+  //Con el tamaño, este depende que se haya hecho el trabajo de manera correcta con la variable
+  if (size == 0){
+    return true;
+  }
+
+	return false;
 }
 
 template <class T>
@@ -121,10 +155,38 @@ T DList<T>::getFirst() const throw (NoSuchElement) {
 
 template <class T>
 void DList<T>::addFirst(T val) throw (OutOfMemory) {
+  //Crear el nuevo nodo
+  DLink<T> *nuevo_nodo = new DLink<T>(val);
+  //Verificar que hay memoria disponible 
+  if (nuevo_nodo == NULL){
+    throw OutOfMemory();
+  }
+  //1. si la lista está vacia 
+    //head = nuevo 
+    //tail = nuevo
+  if (empty()){
+    head = nuevo_nodo;
+    tail = nuevo_nodo;
+  }
+  //2. Si la lista no está vacía
+    //Apuntar nuevo->next = head
+    //head->previous = nuevo
+    //head = nuevo
+  if (!empty()){
+    nuevo_nodo->next=head;
+    head->previous = nuevo_nodo;
+    head = nuevo_nodo;
+  }
+  //Aumentar tamaño
+  size++;
 }
 
 template <class T>
 void DList<T>::add(T val) throw (OutOfMemory) {
+  //Si la lista está vacía
+    if(empty()){
+      addFirst(val);
+    }
 }
 
 template <class T>
