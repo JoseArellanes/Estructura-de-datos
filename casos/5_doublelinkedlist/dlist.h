@@ -113,7 +113,7 @@ bool DList<T>::empty() const {
     return true;
   }
 
-  //Con el apuntador head 
+  //Con el apuntador head
   if (head == NULL){
     return true;
   }
@@ -157,12 +157,12 @@ template <class T>
 void DList<T>::addFirst(T val) throw (OutOfMemory) {
   //Crear el nuevo nodo
   DLink<T> *nuevo_nodo = new DLink<T>(val);
-  //Verificar que hay memoria disponible 
+  //Verificar que hay memoria disponible
   if (nuevo_nodo == NULL){
     throw OutOfMemory();
   }
-  //1. si la lista está vacia 
-    //head = nuevo 
+  //1. si la lista está vacia
+    //head = nuevo
     //tail = nuevo
   if (empty()){
     head = nuevo_nodo;
@@ -187,10 +187,66 @@ void DList<T>::add(T val) throw (OutOfMemory) {
     if(empty()){
       addFirst(val);
     }
+    //Crear nuevo nodo
+    DLink<T> * nuevo_nodo = new DLink<T>(val);
+
+    //Verificar que hay memoria disponible
+    if (nuevo_nodo == NULL){
+        throw OutOfMemory();
+    }
+    tail->next = nuevo_nodo;
+    nuevo_nodo->previous = tail;
+    tail = nuevo_nodo;
+    size++;
 }
 
 template <class T>
 T DList<T>::removeFirst() throw (NoSuchElement) {
+    //Si la lista está vacía mostrar que no hay elementos
+    if (empty()){
+        throw NoSuchElement();
+    }
+
+    int NEW_CODE = 0;
+
+    if (NEW_CODE){
+
+        if(head == tail) {
+            T victim_value = head->value;
+            delete head;
+            size--;
+            return victim_value;
+        }
+
+        DLink<T> * nodo_victima = head;
+        head = head->next;
+        nodo_victima->next=NULL;
+        head->previous = NULL;
+        size--;
+
+        T victim = nodo_victima->value;
+        delete nodo_victima;
+
+        return victim;
+
+    } else {
+        if(head == tail) {
+            T victim_value = head->value;
+            delete head;
+            size--;
+            return victim_value;
+        }
+        head = head->next;
+        head->previous->next=NULL;
+
+        T victim = head->previous->value;
+        delete head->previous;
+        head->previous = NULL;
+
+        size--;
+        return victim;
+    }
+
 }
 
 template <class T>
@@ -319,7 +375,7 @@ void DList<T>::addAfter(DListIterator<T> &itr, T val) throw (IllegalAction, OutO
 template <class T>
 T DList<T>::removeCurrent(DListIterator<T> &itr) throw (IllegalAction) {
 	T val;
-	
+
 	return val;
 }
 

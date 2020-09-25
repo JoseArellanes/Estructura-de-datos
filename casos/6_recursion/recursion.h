@@ -12,7 +12,14 @@
 #include <iostream>
 
 long sum_seq(int n) {
-	return 0;
+    long resultado = 0;
+    long i= 1;
+
+    while (i <= n){
+        resultado = resultado + i;
+        i++;
+    }
+	return resultado;
 }
 
 long sum_rec(int n) {
