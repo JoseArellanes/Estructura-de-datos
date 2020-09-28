@@ -217,8 +217,9 @@ T DList<T>::removeFirst() throw (NoSuchElement) {
             size--;
             return victim_value;
         }
-
+        //crear un nuevo apuntador
         DLink<T> * nodo_victima = head;
+
         head = head->next;
         nodo_victima->next=NULL;
         head->previous = NULL;
