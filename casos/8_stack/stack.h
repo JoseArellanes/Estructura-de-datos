@@ -52,7 +52,7 @@ StackVector<T>::~StackVector() {
 template <class T>
 void StackVector<T>::push(T val) throw (Overflow) {
     //Si next es menor a 0 o mayor o iguala size se lanza la excepcion
-    //throw Overflow, sino se
+    //throw Overflow
     if (next < 0 || next >= size){
         throw Overflow ();
     }
@@ -65,8 +65,7 @@ T StackVector<T>::top() const throw (NoSuchElement) {
     if (empty()){
         throw NoSuchElement();
     }
-    data[next] = data[next - 1];
-	return data[next];
+    return data[next - 1];
 }
 
 template <class T>
