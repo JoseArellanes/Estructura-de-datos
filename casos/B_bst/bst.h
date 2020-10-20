@@ -39,9 +39,9 @@ public:
 template <class T>
 TreeNode<T>::TreeNode(T val) {
 
-    value = 0;
-    left = 0;
-    right = 0;
+    value = val;
+    left = NULL;
+    right = NULL;
 }
 
 template <class T>
@@ -67,9 +67,8 @@ void TreeNode<T>::add(T val) {
             //Insertamos el nodo en la rama izquierda
             left->add(val);
         }
-    }
     //Si val es mayor que value
-    if (val > value){
+    } else {
         //Si no tiene rama derecha
         if (right == NULL){
             //Insertamos el nodo del lado derecho
@@ -84,7 +83,23 @@ void TreeNode<T>::add(T val) {
 
 template <class T>
 bool TreeNode<T>::find(T val) {
-	return false;
+    //Si val es igual al valor del nodo regresar verdadero
+    if (val == value){
+        return true;
+    }
+
+    //Si val es menor que el valor del nodo, buscamos del lado izquierdo
+    if (val < value && left != NULL){
+        return left->find(val);
+    }
+
+    //Buscamos del lado derecho
+    if (val > value && right != NULL){
+        return right->find(val);
+    }
+
+    //Si no se encuentra, regresamos false
+    return false;
 }
 
 template <class T>
@@ -179,6 +194,7 @@ void BST<T>::removeAll() {
 
 template <class T>
 bool BST<T>::find(T val) const {
+        return root->find(val);
 }
 
 template <class T>
