@@ -94,7 +94,30 @@ void Heap<T>::swap(unsigned int i, unsigned int j) {
 }
 
 template <class T>
-void Heap<T>::heapify(unsigned int pos) {
+void Heap<T>::heapify(unsigned int posicion) {
+  //posición más pequeña = posición
+  unsigned int posicion_min = posicion;
+
+  //Si el valor de la posición es mayor con el valor de su hijo izquierdo
+  if (data[posicion] > data[left(posicion)] && left(posicion) <= count) {
+    //La posición más pequeña sería la izquiera
+    posicion_min = left(posicion);
+  }
+
+  //Comparar el valor de la posición mas pequeña con el valor de su hijo derecho
+  if (data[posicion_min] > data[right(posicion)] && right(posicion) <= count) {
+    //La posición más pequeña sería la derecha
+    posicion_min = right(posicion);
+  }
+
+  //Si la posición más pequeña es diferente de la posición
+  if (posicion_min != posicion) {
+    //interambio entre la posición y la posición más pequeña
+    swap(posicion, posicion_min);
+    //heapify(posición más pequeña)
+    heapify(posicion_min);
+  }
+
 }
 
 template <class T>
@@ -114,22 +137,37 @@ void Heap<T>::add(T val) throw (Overflow) {
 
   //reheap up
   //si el padre es más grande, hacer swap
-  std::cout << posicion << ": " << data[posicion]<< std::endl;
-  if (posicion > 0 && data[parent(posicion)] > val) {
-    swap(data[posicion], data[parent(posicion)]);
+  //std::cout << posicion << ": " << data[posicion]<< std::endl;
+  while (posicion > 0 && data[parent(posicion)] > val) {
+    swap(posicion, parent(posicion));
+    posicion = parent(posicion);
   }
 
 }
 
 template <class T>
 T Heap<T>::remove() throw (NoSuchElement) {
-	T aux;
+	//Verificar que no esté vacío el heap
+  if (empty()) {
+    throw NoSuchElement();
+  }
+
+  //Recuperar la raíz para devolverla al final
+  T aux = data[0];
+
+  //Pasar el último elemento a la raíz
+  count--;
+  data[0] = data[count];
+
+  //Reheap down
+  heapify(0);
 
 	return aux;
 }
 
 template <class T>
 void Heap<T>::clear() {
+  count = 0;
 }
 
 

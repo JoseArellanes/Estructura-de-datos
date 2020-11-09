@@ -85,10 +85,16 @@ HashTable<Key, Value>::HashTable(unsigned int sze, Key init, unsigned int (*f) (
  **/
 template <class Key, class Value>
 HashTable<Key, Value>::~HashTable() {
-	//Libera la memoria de los arreglos asignados
+    //Libera la memoria de los arreglos asignados
+    delete [] keys;
+	keys = 0;
 
-  //Pone en nulo las variables miembro
-
+    //Pone en nulo las variables miembro
+	delete [] values;
+	values = 0;
+	size = 0;
+	func = 0;
+	count = 0;
 }
 
 /**
@@ -177,8 +183,13 @@ bool HashTable<Key, Value>::put(Key k, Value v) throw (Overflow) {
  **/
 template <class Key, class Value>
 bool HashTable<Key, Value>::contains(const Key k) const {
-  //Regresa falso si el valor el índice de la llave es -1
-	return false;
+    //Regresa falso si el valor el índice de la llave es -1
+    int posicion_tabla = indexOf(k);
+
+      if (posicion_tabla != -1){
+        return true;
+      }
+        return false;
 }
 
 /**
@@ -189,12 +200,14 @@ bool HashTable<Key, Value>::contains(const Key k) const {
 template <class Key, class Value>
 Value HashTable<Key, Value>::get(const Key k) throw (NoSuchElement) {
 	Value v;
-  //Obtener el índice de la llave
-
-  //Si el valor es -1, lanzar la excepción
-
-	//Devolver el valor de la posición del índice de la llave en el vector de valores
-	return v;
+    //Obtener el índice de la llave
+    int posicion_tabla = indexOf(k);
+    //Si el valor es -1, lanzar la excepción
+    if (posicion_tabla != -1){
+        //Devolver el valor de la posición del índice de la llave en el vector de valores
+        return values[posicion_tabla];
+    }
+    throw NoSuchElement();
 }
 
 /**
@@ -203,8 +216,11 @@ Value HashTable<Key, Value>::get(const Key k) throw (NoSuchElement) {
 template <class Key, class Value>
 void HashTable<Key, Value>::clear() {
 	//Recorre el vector de llaves y les asigna el valor inicial
-
-  //Asigna 0 al contador de elementos
+    for (unsigned int i = 0; i < size; i++) {
+		keys[i] = initialValue;
+	}
+    //Asigna 0 al contador de elementos
+    count = 0;
 }
 
 template <class Key, class Value>
